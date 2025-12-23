@@ -2,7 +2,7 @@
 
 > Advanced Formula 1 race predictions powered by machine learning algorithms and historical data analysis from 140+ races (2020-2025 seasons)
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://agnelsalve15.github.io/f1-race-predictor/)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://agnelsalve.github.io/f1-race-predictor/)
 [![GitHub](https://img.shields.io/badge/github-repo-blue)](https://github.com/AgnelSalve15/f1-race-predictor)
 [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
 
@@ -33,7 +33,7 @@
 
 ## 🎯 Live Demo
 
-**[View Live Demo →](https://agnelsalve15.github.io/f1-race-predictor/)**
+**[View Live Demo →](https://agnelsalve.github.io/f1-race-predictor/)**
 
 ---
 
@@ -289,7 +289,7 @@ git push origin main
 # GitHub Pages auto-deploys from main branch
 ```
 
-Live at: `https://agnelsalve15.github.io/f1-race-predictor/`
+Live at: `https://agnelsalve.github.io/f1-race-predictor/`
 
 ---
 
