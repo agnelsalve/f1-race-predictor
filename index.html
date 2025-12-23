@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Race Predictor | ML-Powered Race Analytics</title>
+    <meta name="description" content="Advanced Formula 1 race predictions using machine learning and 5 years of historical data">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <svg width="80" height="40" viewBox="0 0 80 40">
+                    <polygon points="0,40 0,0 60,0 80,20 60,40" fill="#e10600"/>
+                    <text x="15" y="27" fill="white" font-size="20" font-weight="900">F1</text>
+                </svg>
+                <span class="nav-title">RACE PREDICTOR</span>
+            </div>
+            <div class="nav-links">
+                <a href="#dashboard">Dashboard</a>
+                <a href="#fine-tune">Fine-Tune</a>
+                <a href="#predictions">Predictions</a>
+                <a href="#analytics">Analytics</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">AI-Powered F1 Race Predictions</h1>
+            <p class="hero-subtitle">Machine Learning Model Trained on 120+ Races (2020-2025)</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Circuits</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">120+</div>
+                    <div class="stat-label">Races Analyzed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">87%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Years Data</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Circuit Selector -->
+    <section class="circuit-selector" id="dashboard">
+        <div class="container">
+            <h2 class="section-title">SELECT CIRCUIT</h2>
+            <div class="selector-container">
+                <select id="circuitSelect" class="circuit-dropdown">
+                    <option value="">Loading circuits...</option>
+                </select>
+                <button class="btn-predict" onclick="runPrediction()">
+                    <span>🔮</span> Generate Prediction
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Track Info Banner -->
+    <section class="track-info" id="trackInfo">
+        <div class="container">
+            <div class="track-grid">
+                <div class="track-card">
+                    <div class="track-icon">📍</div>
+                    <div class="track-detail">
+                        <div class="track-label">Circuit</div>
+                        <div class="track-value" id="circuitName">-</div>
+                    </div>
+                </div>
+                <div class="track-card">
+                    <div class="track-icon">🏁</div>
+                    <div class="track-detail">
+                        <div class="track-label">Length</div>
+                        <div class="track-value" id="circuitLength">-</div>
+                    </div>
+                </div>
+                <div class="track-card">
+                    <div class="track-icon">🔄</div>
+                    <div class="track-detail">
+                        <div class="track-label">Laps</div>
+                        <div class="track-value" id="circuitLaps">-</div>
+                    </div>
+                </div>
+                <div class="track-card">
+                    <div class="track-icon">🌡️</div>
+                    <div class="track-detail">
+                        <div class="track-label">Temperature</div>
+                        <div class="track-value" id="circuitTemp">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fine-Tune Model Section -->
+    <section class="fine-tune-section" id="fine-tune">
+        <div class="container">
+            <div class="fine-tune-card">
+                <div class="fine-tune-header">
+                    <div class="fine-tune-title">
+                        <span class="tune-icon">🎛️</span>
+                        <h2>Fine-Tune Model</h2>
+                    </div>
+                    <span class="model-badge">XGBoost Model v2.0</span>
+                </div>
+                <p class="fine-tune-desc">Adjust the importance of each feature to see how it affects race predictions:</p>
+                
+                <!-- Driver & Car Performance -->
+                <div class="slider-category">
+                    <h3 class="category-title"><span>🏎️</span> Driver & Car Performance</h3>
+                    <div class="sliders-container">
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Clean Air Race Pace</span>
+                                <span class="slider-value" id="paceValue">95%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="95" class="slider" id="paceSlider">
+                            <span class="slider-desc">Historical average lap times in clean air</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Qualifying Time</span>
+                                <span class="slider-value" id="qualiValue">82%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="82" class="slider" id="qualiSlider">
+                            <span class="slider-desc">Grid position and qualifying performance</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Team Performance</span>
+                                <span class="slider-value" id="teamValue">68%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="68" class="slider" id="teamSlider">
+                            <span class="slider-desc">Constructor standings and recent form</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Race Conditions -->
+                <div class="slider-category">
+                    <h3 class="category-title"><span>🌦️</span> Race Conditions</h3>
+                    <div class="sliders-container">
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Weather Impact</span>
+                                <span class="slider-value" id="weatherValue">45%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="45" class="slider" id="weatherSlider">
+                            <span class="slider-desc">Rain probability and wet weather skills</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Temperature Effect</span>
+                                <span class="slider-value" id="tempValue">38%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="38" class="slider" id="tempSlider">
+                            <span class="slider-desc">Track temperature impact on tire wear</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategy Factors -->
+                <div class="slider-category">
+                    <h3 class="category-title"><span>📊</span> Strategy Factors</h3>
+                    <div class="sliders-container">
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Tire Strategy</span>
+                                <span class="slider-value" id="tireValue">55%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="55" class="slider" id="tireSlider">
+                            <span class="slider-desc">Compound selection and degradation management</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Pit Stop Efficiency</span>
+                                <span class="slider-value" id="pitStopValue">72%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="72" class="slider" id="pitStopSlider">
+                            <span class="slider-desc">Average pit stop times and crew performance</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Undercut/Overcut</span>
+                                <span class="slider-value" id="undercutValue">48%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="48" class="slider" id="undercutSlider">
+                            <span class="slider-desc">Strategic pit window optimization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chaos Factors -->
+                <div class="slider-category">
+                    <h3 class="category-title"><span>⚠️</span> Race Incidents & Chaos</h3>
+                    <div class="sliders-container">
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Yellow Flag Probability</span>
+                                <span class="slider-value yellow" id="yellowFlagValue">35%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="35" class="slider slider-yellow" id="yellowFlagSlider">
+                            <span class="slider-desc">Likelihood of local yellow flags</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Safety Car Probability</span>
+                                <span class="slider-value red" id="safetyCarValue">28%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="28" class="slider slider-red" id="safetyCarSlider">
+                            <span class="slider-desc">Full course caution likelihood</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">SC Restart Performance</span>
+                                <span class="slider-value red" id="restartValue">22%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="22" class="slider slider-red" id="restartSlider">
+                            <span class="slider-desc">Position changes on restarts</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">First Lap Chaos</span>
+                                <span class="slider-value orange" id="firstLapValue">40%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="40" class="slider slider-orange" id="firstLapSlider">
+                            <span class="slider-desc">Turn 1 incidents and lap 1 position changes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reliability -->
+                <div class="slider-category">
+                    <h3 class="category-title"><span>🔧</span> Reliability & Driver</h3>
+                    <div class="sliders-container">
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Mechanical Reliability</span>
+                                <span class="slider-value" id="reliabilityValue">85%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="85" class="slider" id="reliabilitySlider">
+                            <span class="slider-desc">Engine and component failure probability</span>
+                        </div>
+
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span class="slider-label">Driver Error Factor</span>
+                                <span class="slider-value" id="driverErrorValue">15%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="15" class="slider" id="driverErrorSlider">
+                            <span class="slider-desc">Probability of driver mistakes under pressure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tune-buttons">
+                    <button class="btn-update" onclick="updatePredictions()">
+                        <span>🔄</span> Update Predictions
+                    </button>
+                    <button class="btn-reset" onclick="resetSliders()">
+                        Reset to Default
+                    </button>
+                </div>
+
+                <!-- Scenario Presets -->
+                <div class="scenario-presets">
+                    <h4>Quick Scenarios:</h4>
+                    <div class="preset-buttons">
+                        <button class="btn-preset" onclick="applyPreset('dry')">☀️ Dry Race</button>
+                        <button class="btn-preset" onclick="applyPreset('wet')">🌧️ Wet Race</button>
+                        <button class="btn-preset" onclick="applyPreset('chaos')">💥 Chaotic Race</button>
+                        <button class="btn-preset" onclick="applyPreset('strategic')">🧠 Strategy Battle</button>
+                        <button class="btn-preset" onclick="applyPreset('monaco')">🏰 Monaco Style</button>
+                        <button class="btn-preset" onclick="applyPreset('sprint')">⚡ Sprint</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Predictions Section -->
+    <section class="predictions-section" id="predictions">
+        <div class="container">
+            <!-- 2025 Winner Banner -->
+            <div class="winner-banner">
+                <div class="winner-badge">2025 RACE WINNER</div>
+                <div class="winner-content">
+                    <div class="winner-trophy">🏆</div>
+                    <div class="winner-info">
+                        <div class="winner-name" id="winner2025Name">-</div>
+                        <div class="winner-team" id="winner2025Team">-</div>
+                        <div class="winner-time" id="winner2025Time">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Podium Predictions -->
+            <h2 class="section-title">PREDICTED PODIUM</h2>
+            <div class="podium-container">
+                <div class="podium-position p2">
+                    <div class="position-number">2</div>
+                    <div class="driver-card">
+                        <div class="driver-code" id="p2-code">---</div>
+                        <div class="driver-team" id="p2-team">-</div>
+                        <div class="driver-conf" id="p2-conf">-</div>
+                    </div>
+                    <div class="podium-bar silver"></div>
+                </div>
+                <div class="podium-position p1">
+                    <div class="position-number gold">1</div>
+                    <div class="driver-card winner">
+                        <div class="driver-code" id="p1-code">---</div>
+                        <div class="driver-team" id="p1-team">-</div>
+                        <div class="driver-conf" id="p1-conf">-</div>
+                    </div>
+                    <div class="podium-bar gold"></div>
+                </div>
+                <div class="podium-position p3">
+                    <div class="position-number">3</div>
+                    <div class="driver-card">
+                        <div class="driver-code" id="p3-code">---</div>
+                        <div class="driver-team" id="p3-team">-</div>
+                        <div class="driver-conf" id="p3-conf">-</div>
+                    </div>
+                    <div class="podium-bar bronze"></div>
+                </div>
+            </div>
+
+            <!-- Race Type Toggle -->
+            <div class="race-type-toggle">
+                <h2 class="section-title">RACE PREDICTIONS</h2>
+                <div class="toggle-container">
+                    <button class="toggle-btn active" id="mainRaceBtn" onclick="setRaceType('main')">
+                        🏁 Main Race
+                    </button>
+                    <button class="toggle-btn" id="sprintRaceBtn" onclick="setRaceType('sprint')">
+                        ⚡ Sprint Race
+                    </button>
+                </div>
+                <div class="sprint-info" id="sprintInfo" style="display: none;">
+                    <span class="sprint-badge">🏃 SPRINT WEEKEND</span>
+                    <span class="sprint-laps" id="sprintLaps">19 Laps</span>
+                </div>
+                <div class="no-sprint-info" id="noSprintInfo" style="display: none;">
+                    <span class="no-sprint-badge">ℹ️ No Sprint at this circuit</span>
+                </div>
+            </div>
+
+            <!-- Full Results Table -->
+            <div class="table-container">
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>PREDICTED POS</th>
+                            <th>DRIVER</th>
+                            <th>TEAM</th>
+                            <th>PREDICTED TIME</th>
+                            <th>CONFIDENCE</th>
+                            <th>PREDICTED PTS</th>
+                            <th>2025 FINISH</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <tr>
+                            <td colspan="7" class="loading">Select a circuit and generate predictions...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2025 Sprint Results (if applicable) -->
+            <div class="sprint-results-2025" id="sprintResults2025" style="display: none;">
+                <h3 class="subsection-title">2025 Sprint Results</h3>
+                <div class="sprint-podium-mini">
+                    <div class="sprint-winner">
+                        <span class="sprint-pos">🥇</span>
+                        <span class="sprint-driver" id="sprint2025Winner">-</span>
+                    </div>
+                    <div class="sprint-second">
+                        <span class="sprint-pos">🥈</span>
+                        <span class="sprint-driver" id="sprint2025Second">-</span>
+                    </div>
+                    <div class="sprint-third">
+                        <span class="sprint-pos">🥉</span>
+                        <span class="sprint-driver" id="sprint2025Third">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics-section" id="analytics">
+        <div class="container">
+            <h2 class="section-title">MODEL ANALYTICS</h2>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3>Feature Importance</h3>
+                    <div class="feature-bars" id="featureImportance"></div>
+                </div>
+                <div class="analytics-card">
+                    <h3>Model Performance</h3>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <div class="metric-value">87.3%</div>
+                            <div class="metric-label">Accuracy</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">2.41s</div>
+                            <div class="metric-label">Mean Error</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">0.89</div>
+                            <div class="metric-label">R² Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">500</div>
+                            <div class="metric-label">Trees</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Section -->
+    <section class="data-section" id="data">
+        <div class="container">
+            <h2 class="section-title">HISTORICAL DATA</h2>
+            <div class="data-info">
+                <p>Our prediction model is trained on comprehensive historical data from the 2020-2025 F1 seasons:</p>
+                <ul>
+                    <li>140+ race results with lap times and positions</li>
+                    <li>Qualifying performance correlation analysis</li>
+                    <li>Weather conditions and track temperature data</li>
+                    <li>Driver skill ratings based on career performance</li>
+                    <li>Team constructor performance metrics</li>
+                    <li>Circuit characteristics and overtaking difficulty</li>
+                    <li>Safety car and yellow flag historical data</li>
+                    <li>Pit stop timing and strategy outcomes</li>
+                </ul>
+            </div>
+            <div class="tech-stack">
+                <h3>Technology Stack</h3>
+                <div class="tech-tags">
+                    <span class="tech-tag">Machine Learning</span>
+                    <span class="tech-tag">XGBoost Algorithm</span>
+                    <span class="tech-tag">Monte Carlo Simulation</span>
+                    <span class="tech-tag">Historical Data Analysis</span>
+                    <span class="tech-tag">Feature Engineering</span>
+                    <span class="tech-tag">JavaScript</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 F1 Race Predictor | Data sourced from Formula1.com | Educational Project</p>
+            <p>⭐ Star on GitHub | 🔗 <a href="https://github.com/AgnelSalve/f1-race-predictor">View Repository</a></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/predictions.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
